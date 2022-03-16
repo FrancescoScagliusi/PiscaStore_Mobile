@@ -2,7 +2,7 @@ package it.unito.piscastore.model
 
 data class Product(
     var id: Long,
-    var title: String,
+    var name: String,
     var description: String,
     var dimensions: String,
     var price: Float,
