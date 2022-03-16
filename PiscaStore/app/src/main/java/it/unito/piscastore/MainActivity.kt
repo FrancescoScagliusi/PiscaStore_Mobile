@@ -35,7 +35,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         //setSupportActionBar(findViewById(R.id.toolbar))
 
-        title = "KotlinApp"
+        title = "PiscaStore"
+
 
         tabLayout.addTab(tabLayout.newTab().setText("Tutti"))
         tabLayout.addTab(tabLayout.newTab().setText("Vasi"))
