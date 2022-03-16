@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import com.parse.ParseObject
 import it.unito.piscastore.controller.CatalogService
 import it.unito.piscastore.controller.adapter.MyAdapter
-import kotlinx.android.synthetic.main.fragment_first.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

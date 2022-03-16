@@ -5,50 +5,40 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import it.unito.piscastore.controller.CatalogService
+import it.unito.piscastore.controller.adapter.RvAdapterMain
 import it.unito.piscastore.model.Product
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
+import kotlinx.android.synthetic.main.fragment_catalog_list.*
+import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
-
-import it.unito.piscastore.R
-import it.unito.piscastore.controller.adapter.RvAdapterMain
-import kotlinx.android.synthetic.main.fragment_first.*
-
 /**
- * A simple [Fragment] subclass as the default destination in the navigation.
+ * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class FirstFragment : Fragment(),CellClickListener {
-
-    val BASEURL_old: String = "http://10.0.2.2:8080/catalog/api/v1/"
+class OtherFragment : Fragment(),CellClickListener {
 
     val BASEURL: String = "http://192.168.1.20:8080/catalog/api/v1/"
 
-    val CATEGORY: Long = 1
+    val CATEGORY: Long = 3
 
     private lateinit var adapter: RvAdapterMain
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false)
+        return inflater.inflate(R.layout.fragment_catalog_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         getData()
         recyclerView1.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
+
 
     private fun getData(){
         val retrofit = Retrofit.Builder()
@@ -79,12 +69,24 @@ class FirstFragment : Fragment(),CellClickListener {
     }
     private fun populateList(list: List<Product>){
         adapter = RvAdapterMain(this, list)
-        recyclerView1.adapter = adapter
-        adapter.notifyDataSetChanged()
+        if(list.size>0){
+            if (recyclerView1 != null){
+                recyclerView1.adapter = adapter
+                adapter.notifyDataSetChanged()
 
-        //progressBar.setVisibility(View.GONE)
-        recyclerView1.setVisibility(View.VISIBLE)
+                //progressBar.setVisibility(View.GONE)
+                recyclerView1.setVisibility(View.VISIBLE)
+            }
+            println("LIST: " + list.size)
+        }
+        else{
+            recyclerView1.visibility = View.GONE
+            txtNoProduct.visibility = View.VISIBLE
+        }
+
     }
+
+
 
     override fun onCellClickListener(id: Long) {
         Toast.makeText(context,"Clicked: "+ id, Toast.LENGTH_SHORT).show()

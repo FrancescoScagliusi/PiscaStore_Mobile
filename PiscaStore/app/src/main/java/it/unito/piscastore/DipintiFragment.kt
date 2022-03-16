@@ -5,21 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import it.unito.piscastore.controller.CatalogService
 import it.unito.piscastore.controller.adapter.RvAdapterMain
 import it.unito.piscastore.model.Product
-import kotlinx.android.synthetic.main.fragment_first.*
+import kotlinx.android.synthetic.main.fragment_catalog_list.*
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class SecondFragment : Fragment(),CellClickListener {
+class DipintiFragment : Fragment(),CellClickListener {
 
     val BASEURL: String = "http://192.168.1.20:8080/catalog/api/v1/"
 
@@ -33,7 +31,7 @@ class SecondFragment : Fragment(),CellClickListener {
     ): View? {
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false)
+        return inflater.inflate(R.layout.fragment_catalog_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,13 +69,22 @@ class SecondFragment : Fragment(),CellClickListener {
     }
     private fun populateList(list: List<Product>){
         adapter = RvAdapterMain(this, list)
-        recyclerView1.adapter = adapter
-        adapter.notifyDataSetChanged()
+        if(list.size>0){
+            if (recyclerView1 != null){
+                recyclerView1.adapter = adapter
+                adapter.notifyDataSetChanged()
 
-        //progressBar.setVisibility(View.GONE)
-        recyclerView1.setVisibility(View.VISIBLE)
+                //progressBar.setVisibility(View.GONE)
+                recyclerView1.setVisibility(View.VISIBLE)
+            }
+            println("LIST: " + list.size)
+        }
+        else{
+            recyclerView1.visibility = View.GONE
+            txtNoProduct.visibility = View.VISIBLE
+        }
+
     }
-
     override fun onCellClickListener(id: Long) {
         Toast.makeText(context,"Clicked: "+ id, Toast.LENGTH_SHORT).show()
     }
