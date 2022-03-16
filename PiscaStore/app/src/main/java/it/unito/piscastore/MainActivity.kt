@@ -10,11 +10,13 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayout
 import it.unito.piscastore.controller.adapter.RvAdapterMain
 import it.unito.piscastore.model.Product
 import kotlinx.android.synthetic.main.activity_main.*
 import com.parse.ParseObject
 import it.unito.piscastore.controller.CatalogService
+import it.unito.piscastore.controller.adapter.MyAdapter
 import kotlinx.android.synthetic.main.fragment_first.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,19 +26,35 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.time.Duration
 
 
-class MainActivity : AppCompatActivity(),CellClickListener {
+class MainActivity : AppCompatActivity() {
 
     val BASEURL: String = "http://192.168.1.20:8080/catalog/api/v1/"
 
-    private lateinit var adapter: RvAdapterMain
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //setSupportActionBar(findViewById(R.id.toolbar))
 
-        getData()
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        title = "KotlinApp"
+
+        tabLayout.addTab(tabLayout.newTab().setText("Tutti"))
+        tabLayout.addTab(tabLayout.newTab().setText("Vasi"))
+        tabLayout.addTab(tabLayout.newTab().setText("Dipinti"))
+        tabLayout.addTab(tabLayout.newTab().setText("Altro"))
+
+        tabLayout.tabGravity = TabLayout.GRAVITY_FILL
+        val adapter = MyAdapter(this, supportFragmentManager,
+            tabLayout.tabCount)
+        viewPager.adapter = adapter
+        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                viewPager.currentItem = tab.position
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
 
     }
 
@@ -54,53 +72,6 @@ class MainActivity : AppCompatActivity(),CellClickListener {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-
-    private fun getData(){
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASEURL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val service = retrofit.create(CatalogService::class.java)
-
-        val call = service.getCatalog()
-
-
-        call.enqueue(object : Callback<List<Product>> {
-            override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
-                if (response.code() == 200) {
-                    val productResponse = response.body()!!
-                    println("P: " + productResponse)
-                    populateList(response.body()!!)
-
-                }
-            }
-
-            override fun onFailure(call: Call<List<Product>>, t: Throwable) {
-                println("ERROR: "+t.message.toString())
-
-                //txtFirst.text = t.message
-            }
-        })
-    }
-    private fun populateList(list: List<Product>){
-        adapter = RvAdapterMain(this, list)
-        recyclerView.adapter = adapter
-        adapter.notifyDataSetChanged()
-
-        //progressBar.setVisibility(View.GONE)
-        recyclerView.setVisibility(View.VISIBLE)
-    }
-
-    override fun onCellClickListener(id: Long) {
-        Toast.makeText(this,"Clicked: "+ id,Toast.LENGTH_SHORT).show()
-        /*intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra("split", data)
-        startActivityForResult(intent,DetailActivity.ID)
-        overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_id_bottom)
-        DetailActivity.modified = false*/
     }
 
 }
