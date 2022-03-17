@@ -10,6 +10,7 @@
     <color name="darkgrey">#8E8E8E</color>
     <color name="grey">#DBDBDB</color>
     <color name="lightgrey">#E9E9E9</color>
+    <color name="grey_text">#65635F</color>
     <color name="brown_primary">#6D5D58</color>
     <color name="brown_secondary">#D7CEC9</color>
     <color name="orange_primary">#FE7958</color>

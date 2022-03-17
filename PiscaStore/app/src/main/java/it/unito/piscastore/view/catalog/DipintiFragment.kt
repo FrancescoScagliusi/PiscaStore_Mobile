@@ -1,4 +1,4 @@
-package it.unito.piscastore
+package it.unito.piscastore.view.catalog
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import it.unito.piscastore.CellClickListener
+import it.unito.piscastore.R
 import it.unito.piscastore.controller.CatalogService
 import it.unito.piscastore.controller.adapter.RvAdapterMain
 import it.unito.piscastore.model.Product
@@ -17,11 +19,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class OtherFragment : Fragment(),CellClickListener {
+class DipintiFragment : Fragment(), CellClickListener {
 
     val BASEURL: String = "http://192.168.1.20:8080/catalog/api/v1/"
 
-    val CATEGORY: Long = 3
+    val CATEGORY: Long = 2
 
     private lateinit var adapter: RvAdapterMain
 
@@ -85,9 +87,6 @@ class OtherFragment : Fragment(),CellClickListener {
         }
 
     }
-
-
-
     override fun onCellClickListener(id: Long) {
         Toast.makeText(context,"Clicked: "+ id, Toast.LENGTH_SHORT).show()
     }

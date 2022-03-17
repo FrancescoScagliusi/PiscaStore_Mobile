@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import it.unito.piscastore.AllFragment
-import it.unito.piscastore.VasiFragment
-import it.unito.piscastore.DipintiFragment
-import it.unito.piscastore.OtherFragment
+import it.unito.piscastore.view.catalog.AllFragment
+import it.unito.piscastore.view.catalog.VasiFragment
+import it.unito.piscastore.view.catalog.DipintiFragment
+import it.unito.piscastore.view.catalog.OtherFragment
 
 internal class MyAdapter(
     var context: Context,

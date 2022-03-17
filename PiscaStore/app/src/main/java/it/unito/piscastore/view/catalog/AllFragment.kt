@@ -1,14 +1,20 @@
-package it.unito.piscastore
+package it.unito.piscastore.view.catalog
 
+
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import it.unito.piscastore.CellClickListener
+import it.unito.piscastore.R
 import it.unito.piscastore.controller.CatalogService
+import it.unito.piscastore.controller.adapter.RvAdapterMain
 import it.unito.piscastore.model.Product
+import kotlinx.android.synthetic.main.fragment_catalog_list.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,19 +22,15 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-import it.unito.piscastore.controller.adapter.RvAdapterMain
-import kotlinx.android.synthetic.main.fragment_catalog_list.*
-
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class VasiFragment : Fragment(),CellClickListener {
+class AllFragment : Fragment(), CellClickListener {
 
     val BASEURL_old: String = "http://10.0.2.2:8080/catalog/api/v1/"
 
     val BASEURL: String = "http://192.168.1.20:8080/catalog/api/v1/"
 
-    val CATEGORY: Long = 1
 
     private lateinit var adapter: RvAdapterMain
 
@@ -54,7 +56,7 @@ class VasiFragment : Fragment(),CellClickListener {
 
         val service = retrofit.create(CatalogService::class.java)
 
-        val call = service.getCatalogByCategory(CATEGORY)
+        val call = service.getCatalog()
 
 
         call.enqueue(object : Callback<List<Product>> {
@@ -94,5 +96,8 @@ class VasiFragment : Fragment(),CellClickListener {
 
     override fun onCellClickListener(id: Long) {
         Toast.makeText(context,"Clicked: "+ id, Toast.LENGTH_SHORT).show()
+        val i = Intent(context, DetailProductActivity::class.java)
+        i.putExtra("id", id)
+        requireContext().startActivity(i)
     }
 }

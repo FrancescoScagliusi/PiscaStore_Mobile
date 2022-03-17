@@ -11,18 +11,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
-import it.unito.piscastore.controller.adapter.RvAdapterMain
-import it.unito.piscastore.model.Product
 import kotlinx.android.synthetic.main.activity_main.*
-import com.parse.ParseObject
-import it.unito.piscastore.controller.CatalogService
+
 import it.unito.piscastore.controller.adapter.MyAdapter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.time.Duration
+
 
 
 class MainActivity : AppCompatActivity() {
