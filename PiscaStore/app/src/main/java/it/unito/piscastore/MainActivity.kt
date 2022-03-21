@@ -9,12 +9,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 
 import it.unito.piscastore.controller.adapter.MyAdapter
-
+import it.unito.piscastore.view.catalog.HomeFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,23 +31,23 @@ class MainActivity : AppCompatActivity() {
         title = "PiscaStore"
 
 
-        tabLayout.addTab(tabLayout.newTab().setText("Tutti"))
-        tabLayout.addTab(tabLayout.newTab().setText("Vasi"))
-        tabLayout.addTab(tabLayout.newTab().setText("Dipinti"))
-        tabLayout.addTab(tabLayout.newTab().setText("Altro"))
 
-        tabLayout.tabGravity = TabLayout.GRAVITY_FILL
-        val adapter = MyAdapter(this, supportFragmentManager,
-            tabLayout.tabCount)
-        viewPager.adapter = adapter
-        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                viewPager.currentItem = tab.position
+
+        val firstFragment=HomeFragment()
+        //val secondFragment=SecondFragment()
+        //val thirdFragment=ThirdFragment()
+
+        setCurrentFragment(firstFragment)
+
+        bottomNavigationView.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.home->setCurrentFragment(firstFragment)
+                //R.id.person->//setCurrentFragment(secondFragment)
+                //R.id.settings->//setCurrentFragment(thirdFragment)
+
             }
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
+            true
+        }
 
     }
 
@@ -65,6 +66,12 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    private fun setCurrentFragment(fragment: Fragment)=
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.flFragment,fragment)
+            commit()
+        }
 
 }
 

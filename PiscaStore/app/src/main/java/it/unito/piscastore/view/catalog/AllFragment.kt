@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import it.unito.piscastore.CellClickListener
 import it.unito.piscastore.R
@@ -127,8 +128,17 @@ class AllFragment : Fragment(), CellClickListener {
 
     override fun onCellClickListener(id: Long) {
         Toast.makeText(context,"Clicked: "+ id, Toast.LENGTH_SHORT).show()
-        val i = Intent(context, DetailProductActivity::class.java)
-        i.putExtra("id", id)
-        requireContext().startActivity(i)
+
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.flFragment,DetailFragment.newInstance(id))
+            ?.addToBackStack(null)
+            ?.commit()
+
+        /*var fr = getFragmentManager()?.beginTransaction()
+        fr?.replace(R.id.allLayout, DetailFragment.newInstance(id))
+        fr?.addToBackStack(null)
+        fr?.setCustomAnimations(R.anim.nav_default_enter_anim, R.anim.nav_default_pop_exit_anim, R.anim.nav_default_exit_anim, R.anim.nav_default_exit_anim)
+        fr?.commit()*/
+
     }
 }
