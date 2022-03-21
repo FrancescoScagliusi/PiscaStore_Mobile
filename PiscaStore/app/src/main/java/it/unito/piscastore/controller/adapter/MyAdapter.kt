@@ -4,10 +4,8 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import it.unito.piscastore.AllFragment
-import it.unito.piscastore.VasiFragment
-import it.unito.piscastore.DipintiFragment
-import it.unito.piscastore.OtherFragment
+import it.unito.piscastore.view.catalog.AllFragment
+
 
 internal class MyAdapter(
     var context: Context,
@@ -18,16 +16,16 @@ internal class MyAdapter(
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> {
-                AllFragment()
+                return AllFragment.newInstance(0)
             }
             1 -> {
-                VasiFragment()
+                return AllFragment.newInstance(1)
             }
             2 -> {
-                DipintiFragment()
+                return AllFragment.newInstance(2)
             }
             3 -> {
-                OtherFragment()
+                return AllFragment.newInstance(3)
             }
             else -> {
                 getItem(0)

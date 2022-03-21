@@ -9,20 +9,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
-import it.unito.piscastore.controller.adapter.RvAdapterMain
-import it.unito.piscastore.model.Product
 import kotlinx.android.synthetic.main.activity_main.*
-import com.parse.ParseObject
-import it.unito.piscastore.controller.CatalogService
+
 import it.unito.piscastore.controller.adapter.MyAdapter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.time.Duration
+import it.unito.piscastore.view.catalog.HomeFragment
+import it.unito.piscastore.view.order.CartFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -38,23 +32,24 @@ class MainActivity : AppCompatActivity() {
         title = "PiscaStore"
 
 
-        tabLayout.addTab(tabLayout.newTab().setText("Tutti"))
-        tabLayout.addTab(tabLayout.newTab().setText("Vasi"))
-        tabLayout.addTab(tabLayout.newTab().setText("Dipinti"))
-        tabLayout.addTab(tabLayout.newTab().setText("Altro"))
+        buttonBack.visibility = View.GONE
 
-        tabLayout.tabGravity = TabLayout.GRAVITY_FILL
-        val adapter = MyAdapter(this, supportFragmentManager,
-            tabLayout.tabCount)
-        viewPager.adapter = adapter
-        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                viewPager.currentItem = tab.position
+
+        val firstFragment=HomeFragment()
+        val secondFragment=CartFragment()
+        //val thirdFragment=ThirdFragment()
+
+        setCurrentFragment(firstFragment)
+
+        bottomNavigationView.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.home->setCurrentFragment(firstFragment)
+                R.id.cart->setCurrentFragment(secondFragment)
+                //R.id.settings->//setCurrentFragment(thirdFragment)
+
             }
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
+            true
+        }
 
     }
 
@@ -73,6 +68,12 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    private fun setCurrentFragment(fragment: Fragment)=
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.flFragment,fragment)
+            commit()
+        }
 
 }
 
