@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.tabs.TabLayout
+import it.unito.piscastore.MainActivity
 import it.unito.piscastore.R
 import it.unito.piscastore.controller.adapter.MyAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -49,6 +51,8 @@ class HomeFragment : Fragment() {
         tabLayout.addTab(tabLayout.newTab().setText("Vasi"))
         tabLayout.addTab(tabLayout.newTab().setText("Dipinti"))
         tabLayout.addTab(tabLayout.newTab().setText("Altro"))
+
+        (activity as MainActivity).buttonBack.visibility = View.GONE
 
         tabLayout.tabGravity = TabLayout.GRAVITY_FILL
         val adapter = context?.let {

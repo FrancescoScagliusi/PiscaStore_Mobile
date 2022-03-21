@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 import it.unito.piscastore.controller.adapter.MyAdapter
 import it.unito.piscastore.view.catalog.HomeFragment
+import it.unito.piscastore.view.order.CartFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -31,10 +32,11 @@ class MainActivity : AppCompatActivity() {
         title = "PiscaStore"
 
 
+        buttonBack.visibility = View.GONE
 
 
         val firstFragment=HomeFragment()
-        //val secondFragment=SecondFragment()
+        val secondFragment=CartFragment()
         //val thirdFragment=ThirdFragment()
 
         setCurrentFragment(firstFragment)
@@ -42,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.home->setCurrentFragment(firstFragment)
-                //R.id.person->//setCurrentFragment(secondFragment)
+                R.id.cart->setCurrentFragment(secondFragment)
                 //R.id.settings->//setCurrentFragment(thirdFragment)
 
             }

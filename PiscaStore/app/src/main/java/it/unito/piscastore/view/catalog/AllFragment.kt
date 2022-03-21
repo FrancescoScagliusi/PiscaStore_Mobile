@@ -11,10 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.replace
 import androidx.recyclerview.widget.LinearLayoutManager
 import it.unito.piscastore.CellClickListener
+import it.unito.piscastore.MainActivity
 import it.unito.piscastore.R
 import it.unito.piscastore.controller.CatalogService
 import it.unito.piscastore.controller.adapter.RvAdapterMain
 import it.unito.piscastore.model.Product
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_catalog_list.*
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
@@ -44,10 +46,11 @@ class AllFragment : Fragment(), CellClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        (activity as MainActivity).buttonBack.visibility = View.GONE
+
         if (arguments!=null){
             val id: Long? = arguments?.getLong(ARG_PARAM_CATEGORY)
             println("CATE: "+ id);
-
             if(id!=null) getData(id)
         }
 
@@ -103,19 +106,10 @@ class AllFragment : Fragment(), CellClickListener {
             recyclerView1.visibility = View.GONE
             txtNoProduct.visibility = View.VISIBLE
         }
-
     }
 
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(category: Long) =
             AllFragment().apply {
@@ -132,6 +126,7 @@ class AllFragment : Fragment(), CellClickListener {
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.flFragment,DetailFragment.newInstance(id))
             ?.addToBackStack(null)
+            ?.setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in,R.anim.slide_out)
             ?.commit()
 
         /*var fr = getFragmentManager()?.beginTransaction()

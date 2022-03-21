@@ -1,24 +1,32 @@
 package it.unito.piscastore.view.catalog
 
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import it.unito.piscastore.MainActivity
 import it.unito.piscastore.R
 import it.unito.piscastore.controller.CatalogService
+import it.unito.piscastore.model.Product
 import it.unito.piscastore.model.ProductAuthor
 import kotlinx.android.synthetic.main.activity_detail_product.*
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_detail.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
-import kotlinx.android.synthetic.main.fragment_detail.*
+import java.lang.reflect.Type
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -34,6 +42,8 @@ private const val ARG_PARAM2 = "param2"
 class DetailFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var id: Long? = null
+
+    private var product: Product? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,13 +65,47 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         id?.let { getProductDetails(it) }
 
-        /*buttonBackDetail.setOnClickListener {
-            fragmentManager?.popBackStack();
-        }*/
+        val btnBack = (activity as MainActivity).buttonBack
+        btnBack.visibility = View.VISIBLE
+        btnBack.setOnClickListener {
+            (activity as MainActivity).supportFragmentManager.popBackStack()
+        }
+
+        btnAddToCart.setOnClickListener {
+            addToCart()
+        }
 
 
     }
 
+
+
+    private fun addToCart(){
+        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("cart", MODE_PRIVATE)
+
+        val gson = Gson()
+        val json = sharedPreferences.getString("items", null)
+
+        val type: Type = object : TypeToken<ArrayList<Product?>?>() {}.type
+
+        var items: ArrayList<Product>? = gson.fromJson<Any>(json, type) as? ArrayList<Product>
+
+        if (items == null) {
+            items = ArrayList()
+        }
+
+        if(this.product!=null){
+            if(!items.contains(this.product!!)) items.add(this.product!!)
+            else Toast.makeText(context,"L'articolo è già presente nel carrello!",Toast.LENGTH_SHORT).show()
+        }
+
+        val editor = sharedPreferences.edit()
+
+        editor.putString("items",gson.toJson(items))
+        editor.apply()
+
+        Toast.makeText(context,"Articolo aggiunto al carrello!",Toast.LENGTH_SHORT).show()
+    }
 
     private fun getProductDetails(id: Long) {
         val url = resources.getString(R.string.url_catalog)
@@ -98,7 +142,7 @@ class DetailFragment : Fragment() {
 
     private fun setView(p: ProductAuthor) {
 
-
+        this.product = p.product
 
         val url_image = resources.getString(R.string.url_image)
         detailTxtName.text = p.product.name
