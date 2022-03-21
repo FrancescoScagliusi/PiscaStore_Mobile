@@ -15,12 +15,10 @@ import it.unito.piscastore.controller.CatalogService
 import it.unito.piscastore.controller.adapter.RvAdapterMain
 import it.unito.piscastore.model.Product
 import kotlinx.android.synthetic.main.fragment_catalog_list.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
+import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
+private const val ARG_PARAM_CATEGORY = "id_category"
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -44,11 +42,18 @@ class AllFragment : Fragment(), CellClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        getData()
+
+        if (arguments!=null){
+            val id: Long? = arguments?.getLong(ARG_PARAM_CATEGORY)
+            println("CATE: "+ id);
+
+            if(id!=null) getData(id)
+        }
+
         recyclerView1.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
-    private fun getData(){
+    private fun getData(id: Long){
         val retrofit = Retrofit.Builder()
             .baseUrl(BASEURL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -56,7 +61,11 @@ class AllFragment : Fragment(), CellClickListener {
 
         val service = retrofit.create(CatalogService::class.java)
 
-        val call = service.getCatalog()
+
+        var call = service.getCatalog()
+
+        if(id > 0) call = service.getCatalogByCategory(id)
+
 
 
         call.enqueue(object : Callback<List<Product>> {
@@ -75,6 +84,8 @@ class AllFragment : Fragment(), CellClickListener {
             }
         })
     }
+
+
     private fun populateList(list: List<Product>){
         adapter = RvAdapterMain(this, list)
         if(list.size>0){
@@ -93,6 +104,26 @@ class AllFragment : Fragment(), CellClickListener {
         }
 
     }
+
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment DetailFragment.
+         */
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(category: Long) =
+            AllFragment().apply {
+                arguments = Bundle().apply {
+                    putLong(ARG_PARAM_CATEGORY, category)
+                }
+            }
+    }
+
 
     override fun onCellClickListener(id: Long) {
         Toast.makeText(context,"Clicked: "+ id, Toast.LENGTH_SHORT).show()
