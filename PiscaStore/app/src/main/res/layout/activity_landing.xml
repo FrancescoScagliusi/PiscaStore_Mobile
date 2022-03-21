@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:src="@drawable/ic_piscastore"
-        app:layout_constraintBottom_toTopOf="@+id/btnLogin"
+        app:layout_constraintBottom_toTopOf="@+id/btnLoginLanding"
         app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="32dp" />
@@ -27,7 +28,7 @@
         android:background="@drawable/stroke_button"
         android:fontFamily="@font/inter_regular"
         android:textSize="18dp"
-        android:onClick="Register"
+        android:onClick="register"
         android:text="Sign Up"
         android:textAllCaps="false"
         android:textColor="@color/orange_primary"
@@ -35,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnLoginLanding"
         android:layout_marginBottom="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,5 +48,6 @@
         android:textColor="@color/brown_primary"
         app:layout_constraintBottom_toTopOf="@+id/btnRegister"
         android:text="Login"
-        android:onClick="Login"/>
+        android:onClick="login"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

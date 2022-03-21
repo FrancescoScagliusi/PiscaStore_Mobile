@@ -70,17 +70,18 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <EditText
-            android:id="@+id/txtEmail"
+            android:id="@+id/txtUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:drawableLeft="@drawable/ic_email"
+            android:drawableLeft="@drawable/ic_person"
             android:fontFamily="@font/inter_regular"
-            android:hint="  Insert Email"
-            android:inputType="textEmailAddress"
+            android:hint="  Insert Username"
+            android:inputType="textPersonName"
             android:textSize="18dp"
             app:layout_constraintBottom_toTopOf="@+id/txtPassword"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/txtPassword"
@@ -91,20 +92,10 @@
             android:hint="  Insert Password"
             android:inputType="textPassword"
             android:textSize="18dp"
-            app:layout_constraintBottom_toTopOf="@+id/btnForgotPassword"
+            app:layout_constraintTop_toBottomOf="@+id/txtUsername"
+            app:layout_constraintBottom_toTopOf="@+id/btnLogin"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/btnForgotPassword"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/inter_regular"
-            android:text="Forgot password?"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toTopOf="@+id/btnLogin"
-            app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
             android:id="@+id/btnLogin"
