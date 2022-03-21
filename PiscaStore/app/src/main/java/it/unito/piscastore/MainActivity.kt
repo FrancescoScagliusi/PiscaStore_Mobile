@@ -1,41 +1,43 @@
 package it.unito.piscastore
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.tabs.TabLayout
-import it.unito.piscastore.controller.adapter.RvAdapterMain
-import it.unito.piscastore.model.Product
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import com.parse.ParseObject
-import it.unito.piscastore.controller.CatalogService
-import it.unito.piscastore.controller.adapter.MyAdapter
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.time.Duration
+import it.unito.piscastore.view.activity.LandingActivity
 
 
 class MainActivity : AppCompatActivity() {
 
-    val BASEURL: String = "http://192.168.1.20:8080/catalog/api/v1/"
+    val BASEURL: String = "http://192.168.1.155:8080/catalog/api/v1/"
+    val userStorage: String = "userStorage.data"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
+
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val token = intent.getStringExtra("token")
+        if(token != null){
+            this.saveUser(token)
+            setContentView(R.layout.activity_main)
+        }
+        else if (this.getUser() != ""){
+            setContentView(R.layout.activity_main)
+            }
+            else{
+                val intent = Intent(this, LandingActivity::class.java)
+                startActivity(intent)
+            }
         //setSupportActionBar(findViewById(R.id.toolbar))
 
-        title = "PiscaStore"
+        /*title = "PiscaStore"
 
 
         tabLayout.addTab(tabLayout.newTab().setText("Tutti"))
@@ -54,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
+        })*/
 
     }
 
@@ -72,6 +74,38 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    fun saveObjectToSharedPreference(context: Context, serializedObjectKey: String?, `object`: Any?) {
+        val sharedPreferences = context.getSharedPreferences(userStorage, 0)
+        val sharedPreferencesEditor = sharedPreferences.edit()
+        val gson = Gson()
+        val serializedObject = gson.toJson(`object`)
+        sharedPreferencesEditor.putString(serializedObjectKey, serializedObject)
+        sharedPreferencesEditor.apply()
+    }
+
+    fun <GenericClass> getSavedObjectFromPreference(context: Context, preferenceKey: String?, classType: Class<GenericClass>?): GenericClass? {
+        val sharedPreferences = context.getSharedPreferences(userStorage, 0)
+        if (sharedPreferences.contains(preferenceKey)) {
+            val gson = Gson()
+            return gson.fromJson(sharedPreferences.getString(preferenceKey, ""), classType)
+        }
+        return null
+    }
+
+    fun saveUser(accessToken: String){
+        val sharedPreferences: SharedPreferences = this.getSharedPreferences("tokenStorage", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor =  sharedPreferences.edit()
+        editor.putString("token", accessToken)
+        editor.apply()
+        editor.commit()
+    }
+
+    fun getUser(): String{
+        val sharedPreferences: SharedPreferences = this.getSharedPreferences("tokenStorage", Context.MODE_PRIVATE)
+        val sharedIdValue = sharedPreferences.getString("token","")
+        return sharedIdValue.toString()
     }
 
 }
