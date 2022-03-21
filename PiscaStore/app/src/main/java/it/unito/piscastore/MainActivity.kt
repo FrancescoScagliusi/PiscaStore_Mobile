@@ -1,6 +1,8 @@
 package it.unito.piscastore
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -15,6 +17,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 
 import it.unito.piscastore.controller.adapter.MyAdapter
+import it.unito.piscastore.view.activity.LandingActivity
 import it.unito.piscastore.view.catalog.HomeFragment
 import it.unito.piscastore.view.order.CartFragment
 
@@ -26,9 +29,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        //setSupportActionBar(findViewById(R.id.toolbar))
+        val token = intent.getStringExtra("token")
+        if(token != null){
+            this.saveUser(token)
+        }
+        else if (this.getUser() == ""){
+            val intent = Intent(this, LandingActivity::class.java)
+            startActivity(intent)
+        }
 
+        //setSupportActionBar(findViewById(R.id.toolbar))
+        setContentView(R.layout.activity_main)
         title = "PiscaStore"
 
 
@@ -74,6 +85,20 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.flFragment,fragment)
             commit()
         }
+
+    fun saveUser(accessToken: String){
+        val sharedPreferences: SharedPreferences = this.getSharedPreferences("tokenStorage", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor =  sharedPreferences.edit()
+        editor.putString("token", accessToken)
+        editor.apply()
+        editor.commit()
+    }
+
+    fun getUser(): String{
+        val sharedPreferences: SharedPreferences = this.getSharedPreferences("tokenStorage", Context.MODE_PRIVATE)
+        val sharedIdValue = sharedPreferences.getString("token","")
+        return sharedIdValue.toString()
+    }
 
 }
 
