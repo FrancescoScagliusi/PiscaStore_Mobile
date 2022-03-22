@@ -1,5 +1,6 @@
 package it.unito.piscastore.model
 
+
 data class SigninUser (
     var username: String,
     var password: String
