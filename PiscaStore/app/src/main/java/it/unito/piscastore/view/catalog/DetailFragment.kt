@@ -65,17 +65,11 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         id?.let { getProductDetails(it) }
 
-        val btnBack = (activity as MainActivity).buttonBack
-        btnBack.visibility = View.VISIBLE
-        btnBack.setOnClickListener {
-            (activity as MainActivity).supportFragmentManager.popBackStack()
-        }
+        (activity as MainActivity).displayBack(true)
 
         btnAddToCart.setOnClickListener {
             addToCart()
         }
-
-
     }
 
 
@@ -86,9 +80,9 @@ class DetailFragment : Fragment() {
         val gson = Gson()
         val json = sharedPreferences.getString("items", null)
 
-        val type: Type = object : TypeToken<ArrayList<Product?>?>() {}.type
+        val type: Type = object : TypeToken<ArrayList<Product>>() {}.type
 
-        var items: ArrayList<Product>? = gson.fromJson<Any>(json, type) as? ArrayList<Product>
+        var items: ArrayList<Product> = gson.fromJson<Any>(json, type) as ArrayList<Product>
 
         if (items == null) {
             items = ArrayList()
@@ -190,4 +184,18 @@ class DetailFragment : Fragment() {
                 }
             }
     }
+}
+
+interface OnProductClickListener {
+
+    /**
+     * When the user clicks on each row this method will be invoked.
+     */
+    fun onUpdate(position: Int, model: Product)
+
+    /**
+     * when the user clicks on delete icon this method will be invoked to remove item at position.
+     */
+    fun onDelete(model: Product)
+
 }

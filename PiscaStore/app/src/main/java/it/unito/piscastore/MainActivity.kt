@@ -80,6 +80,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    public fun displayBack(b: Boolean){
+
+        buttonBack.setOnClickListener {
+           supportFragmentManager.popBackStack()
+        }
+
+        if(b) buttonBack.visibility = View.VISIBLE
+        else buttonBack.visibility = View.GONE
+    }
+
     private fun setCurrentFragment(fragment: Fragment)=
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment,fragment)
