@@ -47,12 +47,15 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         tabLayout.addTab(tabLayout.newTab().setText("Tutti"))
         tabLayout.addTab(tabLayout.newTab().setText("Vasi"))
         tabLayout.addTab(tabLayout.newTab().setText("Dipinti"))
         tabLayout.addTab(tabLayout.newTab().setText("Altro"))
 
-        (activity as MainActivity).buttonBack.visibility = View.GONE
+        (activity as MainActivity).displayBack(false)
+
 
         tabLayout.tabGravity = TabLayout.GRAVITY_FILL
         val adapter = context?.let {

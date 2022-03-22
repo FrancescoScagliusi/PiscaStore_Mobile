@@ -46,7 +46,7 @@ class AllFragment : Fragment(), CellClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        (activity as MainActivity).buttonBack.visibility = View.GONE
+        (activity as MainActivity).displayBack(false)
 
         if (arguments!=null){
             val id: Long? = arguments?.getLong(ARG_PARAM_CATEGORY)

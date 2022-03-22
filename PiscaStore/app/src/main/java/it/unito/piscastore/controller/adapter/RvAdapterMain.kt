@@ -1,7 +1,6 @@
 package it.unito.piscastore.controller.adapter
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +12,6 @@ import com.squareup.picasso.Picasso
 import it.unito.piscastore.CellClickListener
 import it.unito.piscastore.R
 import it.unito.piscastore.model.Product
-import java.io.InputStream
-import java.net.URL
 
 
 class RvAdapterMain(private val cellClickListener: CellClickListener, private val dataList: List<Product>) : RecyclerView.Adapter<RvAdapterMain.ViewHolder>() {
@@ -46,7 +43,7 @@ class RvAdapterMain(private val cellClickListener: CellClickListener, private va
 
         p0.name?.text = data.name.capitalize()
         p0.dimensions?.text = data.dimensions.capitalize()
-        p0.price?.text =  data.price.toString()
+        p0.price?.text = "€ " + data.price.toString()
 
         Picasso.get().load("http://192.168.1.20:8080/catalog/api/v1/image/" +  data.image).into(p0.image)
     }
