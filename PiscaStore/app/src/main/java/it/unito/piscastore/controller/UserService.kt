@@ -12,4 +12,5 @@ interface UserService {
 
     @POST("signup")
     fun register(@Body user: SignupUser?): Call<CurrentUser?>?
+
 }
