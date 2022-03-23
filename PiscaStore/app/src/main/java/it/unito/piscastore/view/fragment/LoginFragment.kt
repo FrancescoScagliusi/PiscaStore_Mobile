@@ -35,7 +35,7 @@ class LoginFragment : Fragment() {
         btnLogin.setOnClickListener{
 
             val retrofit = Retrofit.Builder()
-                    .baseUrl(resources.getString(R.string.url_user))
+                    .baseUrl(resources.getString(R.string.url_user_local))
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
             val service = retrofit.create(UserService::class.java)

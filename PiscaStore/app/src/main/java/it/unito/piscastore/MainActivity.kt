@@ -24,7 +24,6 @@ import it.unito.piscastore.view.order.CartFragment
 
 class MainActivity : AppCompatActivity() {
 
-    val BASEURL: String = "http://192.168.1.20:8080/catalog/api/v1/"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,8 +97,12 @@ class MainActivity : AppCompatActivity() {
 
     fun saveUser(accessToken: String){
         val sharedPreferences: SharedPreferences = this.getSharedPreferences("tokenStorage", Context.MODE_PRIVATE)
+
         val editor: SharedPreferences.Editor =  sharedPreferences.edit()
+
         editor.putString("token", accessToken)
+        editor.putString("items",null)
+
         editor.apply()
         editor.commit()
     }
@@ -108,6 +111,9 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences: SharedPreferences = this.getSharedPreferences("tokenStorage", Context.MODE_PRIVATE)
         val sharedIdValue = sharedPreferences.getString("token","")
         return sharedIdValue.toString()
+    }
+
+    override fun onBackPressed() {
     }
 
 }

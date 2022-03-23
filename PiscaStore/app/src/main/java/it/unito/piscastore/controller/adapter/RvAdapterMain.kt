@@ -45,7 +45,7 @@ class RvAdapterMain(private val cellClickListener: CellClickListener, private va
         p0.dimensions?.text = data.dimensions.capitalize()
         p0.price?.text = "€ " + data.price.toString()
 
-        Picasso.get().load("http://192.168.1.20:8080/catalog/api/v1/image/" +  data.image).into(p0.image)
+        Picasso.get().load(context.resources.getString(R.string.url_image_local) +  data.image).into(p0.image)
     }
 
 

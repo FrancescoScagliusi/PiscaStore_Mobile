@@ -97,25 +97,27 @@ class CartFragment : Fragment(), OnProductClickListener {
     }
 
     private fun getItems(){
-        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("cart",
+        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("tokenStorage",
             Context.MODE_PRIVATE
         )
 
         val gson = Gson()
         val json = sharedPreferences.getString("items", null)
 
-        val type: Type = object : TypeToken<ArrayList<Product>>() {}.type
+        if(json!=null){
+            val type: Type = object : TypeToken<ArrayList<Product>>() {}.type
 
-        val list = gson.fromJson<Any>(json, type)
-        this.items = list as ArrayList<Product>
+            val list = gson.fromJson<Any>(json, type)
+            this.items = list as ArrayList<Product>
 
-        println("CART LIST " + this.items.size)
+            println("CART LIST " + this.items.size)
+        }
 
         populateList()
     }
 
     private fun updateCart(){
-        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("cart",
+        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("tokenStorage",
             Context.MODE_PRIVATE
         )
         val gson = Gson()

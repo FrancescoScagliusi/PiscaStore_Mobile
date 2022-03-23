@@ -75,22 +75,28 @@ class DetailFragment : Fragment() {
 
 
     private fun addToCart(){
-        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("cart", MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("tokenStorage", MODE_PRIVATE)
 
         val gson = Gson()
         val json = sharedPreferences.getString("items", null)
 
-        val type: Type = object : TypeToken<ArrayList<Product>>() {}.type
+        var items = ArrayList<Product>()
+        if(json!=null) {
+            val type: Type = object : TypeToken<ArrayList<Product>>() {}.type
 
-        var items: ArrayList<Product> = gson.fromJson<Any>(json, type) as ArrayList<Product>
+            items = gson.fromJson<Any>(json, type) as ArrayList<Product>
 
-        if (items == null) {
-            items = ArrayList()
+            if (this.product != null) {
+                if (!items.contains(this.product!!)) items.add(this.product!!)
+                else Toast.makeText(
+                    context,
+                    "L'articolo è già presente nel carrello!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
-
-        if(this.product!=null){
-            if(!items.contains(this.product!!)) items.add(this.product!!)
-            else Toast.makeText(context,"L'articolo è già presente nel carrello!",Toast.LENGTH_SHORT).show()
+        else{
+            items.add(this.product!!)
         }
 
         val editor = sharedPreferences.edit()
@@ -102,7 +108,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun getProductDetails(id: Long) {
-        val url = resources.getString(R.string.url_catalog)
+        val url = resources.getString(R.string.url_catalog_local)
 
 
         val retrofit = Retrofit.Builder()
@@ -138,7 +144,7 @@ class DetailFragment : Fragment() {
 
         this.product = p.product
 
-        val url_image = resources.getString(R.string.url_image)
+        val url_image = resources.getString(R.string.url_image_local)
         detailTxtName.text = p.product.name
 
         val imageList = ArrayList<SlideModel>() // Create image list

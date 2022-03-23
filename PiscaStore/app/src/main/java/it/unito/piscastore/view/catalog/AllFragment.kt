@@ -28,11 +28,6 @@ private const val ARG_PARAM_CATEGORY = "id_category"
  */
 class AllFragment : Fragment(), CellClickListener {
 
-    val BASEURL_old: String = "http://10.0.2.2:8080/catalog/api/v1/"
-
-    val BASEURL: String = "http://192.168.1.20:8080/catalog/api/v1/"
-
-
     private lateinit var adapter: RvAdapterMain
 
     override fun onCreateView(
@@ -59,7 +54,7 @@ class AllFragment : Fragment(), CellClickListener {
 
     private fun getData(id: Long){
         val retrofit = Retrofit.Builder()
-            .baseUrl(BASEURL)
+            .baseUrl(resources.getString(R.string.url_catalog_local))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
