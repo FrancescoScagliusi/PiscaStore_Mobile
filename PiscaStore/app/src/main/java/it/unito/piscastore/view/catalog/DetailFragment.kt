@@ -20,6 +20,7 @@ import it.unito.piscastore.model.Product
 import it.unito.piscastore.model.ProductAuthor
 import kotlinx.android.synthetic.main.activity_detail_product.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_catalog_list.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -63,6 +64,8 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showProgress(true)
+
         id?.let { getProductDetails(it) }
 
         (activity as MainActivity).displayBack(true)
@@ -73,6 +76,16 @@ class DetailFragment : Fragment() {
     }
 
 
+    private fun showProgress(b: Boolean){
+        if(b) {
+            paneDetail.visibility = View.GONE
+            progressBarDetail.visibility = View.VISIBLE
+        }
+        else{
+            paneDetail.visibility = View.VISIBLE
+            progressBarDetail.visibility = View.GONE
+        }
+    }
 
     private fun addToCart(){
         val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("tokenStorage", MODE_PRIVATE)
@@ -179,6 +192,8 @@ class DetailFragment : Fragment() {
         detailTxtPrice.text = "€" + p.product.price
         detailTxtDescription.text = p.product.description
         detailTxtDimensions.text = p.product.dimensions
+
+        showProgress(false)
     }
 
     companion object {

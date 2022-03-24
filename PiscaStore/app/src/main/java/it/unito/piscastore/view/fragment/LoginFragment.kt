@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import it.unito.piscastore.MainActivity
 import it.unito.piscastore.R
@@ -13,6 +14,7 @@ import it.unito.piscastore.model.CurrentUser
 import it.unito.piscastore.model.SigninUser
 import it.unito.piscastore.view.activity.LandingActivity
 import it.unito.piscastore.view.activity.RegisterActivity
+import kotlinx.android.synthetic.main.fragment_catalog_list.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,11 +31,25 @@ class LoginFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
+    private fun showProgress(b: Boolean){
+        if(b) {
+            formPaneLogin.visibility = View.GONE
+            progressPaneLogin.visibility = View.VISIBLE
+        }
+        else{
+            formPaneLogin.visibility = View.VISIBLE
+            progressPaneLogin.visibility = View.GONE
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        showProgress(false)
+
         btnLogin.setOnClickListener{
 
+            showProgress(true)
             val retrofit = Retrofit.Builder()
                     .baseUrl(resources.getString(R.string.url_user_local))
                     .addConverterFactory(GsonConverterFactory.create())
@@ -42,10 +58,16 @@ class LoginFragment : Fragment() {
             val user = SigninUser(txtUsername.text.toString(), txtPassword.text.toString())
             val call = service.login(user)
             println("Logging")
+
             call?.enqueue(object : Callback<CurrentUser?> {
                 override fun onResponse(call: Call<CurrentUser?>, response: Response<CurrentUser?>) {
+
                     val u = response.body()!!
                     println("Logged: " + u)
+
+                    showProgress(true)
+                    Toast.makeText(context,"Login effettuato!",Toast.LENGTH_SHORT).show()
+
                     var intent = Intent(getContext(), MainActivity::class.java)
                     intent.putExtra("token", u.accessToken)
                     startActivity(intent)
@@ -54,6 +76,10 @@ class LoginFragment : Fragment() {
 
                 override fun onFailure(call: Call<CurrentUser?>, t: Throwable) {
                     println("ERROR: "+t.message.toString())
+
+                    showProgress(true)
+                    Toast.makeText(context,"Errore Login! Controlla le info",Toast.LENGTH_SHORT).show()
+
                 }
             })
         }

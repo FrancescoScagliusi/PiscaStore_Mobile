@@ -26,17 +26,13 @@ class RvAdapterMain(private val cellClickListener: CellClickListener, private va
     }
 
     override fun getItemCount():Int{
-
-        Log.d("SIZE", "Size: " + dataList.size)
         return dataList.size
-
     }
 
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
 
         val data = dataList.get(p1)
 
-        println("ADA: " + data )
         p0.itemView.setOnClickListener {
             cellClickListener.onCellClickListener(data.id)
         }

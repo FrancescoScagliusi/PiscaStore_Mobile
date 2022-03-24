@@ -41,6 +41,9 @@ class AllFragment : Fragment(), CellClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        recyclerView1.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        showProgress(true)
+
         (activity as MainActivity).displayBack(false)
 
         if (arguments!=null){
@@ -48,8 +51,17 @@ class AllFragment : Fragment(), CellClickListener {
             println("CATE: "+ id);
             if(id!=null) getData(id)
         }
+    }
 
-        recyclerView1.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    private fun showProgress(b: Boolean){
+        if(b) {
+            recyclerView1.visibility = View.GONE
+            progressBarCatalog.visibility = View.VISIBLE
+        }
+        else{
+            recyclerView1.visibility = View.VISIBLE
+            progressBarCatalog.visibility = View.GONE
+        }
     }
 
     private fun getData(id: Long){
@@ -57,6 +69,7 @@ class AllFragment : Fragment(), CellClickListener {
             .baseUrl(resources.getString(R.string.url_catalog_local))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
 
         val service = retrofit.create(CatalogService::class.java)
 
@@ -70,8 +83,6 @@ class AllFragment : Fragment(), CellClickListener {
         call.enqueue(object : Callback<List<Product>> {
             override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
                 if (response.code() == 200) {
-                    val productResponse = response.body()!!
-                    println("P: " + productResponse)
                     populateList(response.body()!!)
                 }
             }
@@ -87,18 +98,17 @@ class AllFragment : Fragment(), CellClickListener {
 
     private fun populateList(list: List<Product>){
         adapter = RvAdapterMain(this, list)
+        showProgress(false)
+
         if(list.size>0){
             if (recyclerView1 != null){
                 recyclerView1.adapter = adapter
                 adapter.notifyDataSetChanged()
-
-                //progressBar.setVisibility(View.GONE)
-                recyclerView1.setVisibility(View.VISIBLE)
             }
             println("LIST: " + list.size)
         }
         else{
-            recyclerView1.visibility = View.GONE
+            println("LIST: is empty")
             txtNoProduct.visibility = View.VISIBLE
         }
     }
