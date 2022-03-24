@@ -41,7 +41,7 @@ class AllFragment : Fragment(), CellClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        recyclerView1.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView1.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
         showProgress(true)
 
         (activity as MainActivity).displayBack(false)

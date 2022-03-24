@@ -20,6 +20,7 @@ import it.unito.piscastore.controller.adapter.MyAdapter
 import it.unito.piscastore.view.activity.LandingActivity
 import it.unito.piscastore.view.catalog.HomeFragment
 import it.unito.piscastore.view.order.CartFragment
+import it.unito.piscastore.view.order.OrderFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         val firstFragment=HomeFragment()
         val secondFragment=CartFragment()
-        //val thirdFragment=ThirdFragment()
+        val thirdFragment=OrderFragment()
 
         setCurrentFragment(firstFragment)
 
@@ -55,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId){
                 R.id.home->setCurrentFragment(firstFragment)
                 R.id.cart->setCurrentFragment(secondFragment)
-                //R.id.settings->//setCurrentFragment(thirdFragment)
+                R.id.person->setCurrentFragment(thirdFragment)
 
             }
             true
@@ -86,7 +87,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         if(b) buttonBack.visibility = View.VISIBLE
-        else buttonBack.visibility = View.GONE
+        else {
+            buttonBack.visibility = View.GONE
+            txtTitleBar.visibility = View.GONE
+        }
+    }
+
+    public fun showTitle(title: String){
+        txtTitleBar.text = title
+        txtTitleBar.visibility = View.VISIBLE
     }
 
     private fun setCurrentFragment(fragment: Fragment)=
