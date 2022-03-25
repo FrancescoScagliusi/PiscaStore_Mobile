@@ -4,22 +4,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.activity_main.*
-
-import it.unito.piscastore.controller.adapter.MyAdapter
 import it.unito.piscastore.view.activity.LandingActivity
 import it.unito.piscastore.view.catalog.HomeFragment
+import it.unito.piscastore.view.fragment.ProfileFragment
 import it.unito.piscastore.view.order.CartFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val token = intent.getStringExtra("token")
+        val id = intent.getLongExtra("id", -1)
         if(token != null){
             this.saveUser(token)
         }
@@ -48,6 +43,10 @@ class MainActivity : AppCompatActivity() {
 
         val firstFragment=HomeFragment()
         val secondFragment=CartFragment()
+        val thirdFragment=ProfileFragment()
+        val b = Bundle()
+        b.putString("token", this.getUser())
+        thirdFragment.arguments = b;
         //val thirdFragment=ThirdFragment()
 
         setCurrentFragment(firstFragment)
@@ -56,6 +55,7 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId){
                 R.id.home->setCurrentFragment(firstFragment)
                 R.id.cart->setCurrentFragment(secondFragment)
+                R.id.profile->setCurrentFragment(thirdFragment)
                 //R.id.settings->//setCurrentFragment(thirdFragment)
 
             }

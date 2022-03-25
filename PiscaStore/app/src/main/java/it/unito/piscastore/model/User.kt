@@ -26,3 +26,14 @@ data class CurrentUser(
         var tokenType: String
 )
 
+data class CurrentInfo(
+        var id: Long,
+        var name: String,
+        var surname: String,
+        var username: String,
+        var email: String,
+        var password: String,
+        var phone: String,
+        var roles: Array<Any>,
+        var addresses: Any
+)

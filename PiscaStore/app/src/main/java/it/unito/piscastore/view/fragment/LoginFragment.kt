@@ -48,6 +48,7 @@ class LoginFragment : Fragment() {
                     println("Logged: " + u)
                     var intent = Intent(getContext(), MainActivity::class.java)
                     intent.putExtra("token", u.accessToken)
+                    intent.putExtra("id",u.id)
                     startActivity(intent)
 
                 }
