@@ -15,6 +15,7 @@ import it.unito.piscastore.controller.AccountService
 import it.unito.piscastore.model.CurrentInfo
 import it.unito.piscastore.model.CurrentUser
 import it.unito.piscastore.view.activity.LandingActivity
+import it.unito.piscastore.view.order.OrderFragment
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import okhttp3.OkHttpClient
@@ -76,8 +77,13 @@ class ProfileFragment: Fragment() {
             startActivity(intent)
         }
 
+
         txtArticoli.setOnClickListener {
             (activity as MainActivity).setCurrentFragment(MyItemFragment.newInstance(2))
+        }
+        txtOrdini.setOnClickListener {
+            (activity as MainActivity).setCurrentFragment(OrderFragment())
+
         }
     }
 

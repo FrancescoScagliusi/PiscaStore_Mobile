@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import it.unito.piscastore.view.catalog.AllFragment
 
-
+@Suppress("DEPRECATION")
 internal class MyAdapter(
     var context: Context,
     fm: FragmentManager,
@@ -14,6 +14,8 @@ internal class MyAdapter(
 ) :
     FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
+        System.out.println("Fragment: " + position)
+
         return when (position) {
             0 -> {
                 return AllFragment.newInstance(0)
@@ -25,6 +27,9 @@ internal class MyAdapter(
                 return AllFragment.newInstance(2)
             }
             3 -> {
+                return AllFragment.newInstance(4)
+            }
+            4 -> {
                 return AllFragment.newInstance(3)
             }
             else -> {

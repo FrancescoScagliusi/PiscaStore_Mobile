@@ -28,11 +28,6 @@ private const val ARG_PARAM_CATEGORY = "id_category"
  */
 class AllFragment : Fragment(), CellClickListener {
 
-    val BASEURL_old: String = "http://10.0.2.2:8080/catalog/api/v1/"
-
-    val BASEURL: String = "http://192.168.1.20:8080/catalog/api/v1/"
-
-
     private lateinit var adapter: RvAdapterMain
 
     override fun onCreateView(
@@ -46,6 +41,9 @@ class AllFragment : Fragment(), CellClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        recyclerView1.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+        showProgress(true)
+
         (activity as MainActivity).displayBack(false)
 
         if (arguments!=null){
@@ -53,15 +51,25 @@ class AllFragment : Fragment(), CellClickListener {
             println("CATE: "+ id);
             if(id!=null) getData(id)
         }
+    }
 
-        recyclerView1.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    private fun showProgress(b: Boolean){
+        if(b) {
+            recyclerView1.visibility = View.GONE
+            progressBarCatalog.visibility = View.VISIBLE
+        }
+        else{
+            recyclerView1.visibility = View.VISIBLE
+            progressBarCatalog.visibility = View.GONE
+        }
     }
 
     private fun getData(id: Long){
         val retrofit = Retrofit.Builder()
-            .baseUrl(BASEURL)
+            .baseUrl(resources.getString(R.string.url_catalog))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
 
         val service = retrofit.create(CatalogService::class.java)
 
@@ -75,8 +83,6 @@ class AllFragment : Fragment(), CellClickListener {
         call.enqueue(object : Callback<List<Product>> {
             override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
                 if (response.code() == 200) {
-                    val productResponse = response.body()!!
-                    println("P: " + productResponse)
                     populateList(response.body()!!)
                 }
             }
@@ -92,18 +98,17 @@ class AllFragment : Fragment(), CellClickListener {
 
     private fun populateList(list: List<Product>){
         adapter = RvAdapterMain(this, list)
+        showProgress(false)
+
         if(list.size>0){
             if (recyclerView1 != null){
                 recyclerView1.adapter = adapter
                 adapter.notifyDataSetChanged()
-
-                //progressBar.setVisibility(View.GONE)
-                recyclerView1.setVisibility(View.VISIBLE)
             }
             println("LIST: " + list.size)
         }
         else{
-            recyclerView1.visibility = View.GONE
+            println("LIST: is empty")
             txtNoProduct.visibility = View.VISIBLE
         }
     }

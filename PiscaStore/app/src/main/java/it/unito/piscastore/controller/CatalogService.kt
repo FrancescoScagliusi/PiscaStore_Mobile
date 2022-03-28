@@ -21,4 +21,8 @@ interface CatalogService {
 
     @GET("products")
     fun getProductsByAuthor(@Query("id") id: Long): Call<List<Product>>
+
+    @GET("products/{id}")
+    suspend fun getProductById2(@Path("id")id: Long): Response<ProductAuthor>
+
 }
