@@ -48,23 +48,10 @@ class ProfileFragment: Fragment() {
         showProgress(true)
 
 
+
         (activity as MainActivity).displayBack(false)
         (activity as MainActivity).showTitle("Il mio Profilo")
 
-        val token = this.getToken()
-        println(token)
-
-
-        val id = getUserId(token)
-        if(id!=null){
-            this.id_user = id
-        }
-
-        val current = getUserDetail(token)
-        if(current!=null){
-            this.currentUser = current
-            setView()
-        }
 
 
         btnLogout.setOnClickListener {
@@ -83,7 +70,27 @@ class ProfileFragment: Fragment() {
             else Toast.makeText(context,"Impossibila caricare gli ordini dell'utente loggato",Toast.LENGTH_SHORT).show()
         }
 
+        loadAll()
+    }
+
+    private fun loadAll(){
+        val token = this.getToken()
+        println(token)
+
+
+        val id = getUserId(token)
+        if(id!=null){
+            this.id_user = id
+        }
+
+        val current = getUserDetail(token)
+        if(current!=null){
+            this.currentUser = current
+            setView()
+        }
+
         showProgress(false)
+
     }
 
     private fun setView(){
