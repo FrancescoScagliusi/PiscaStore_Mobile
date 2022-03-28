@@ -4,28 +4,15 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="32dp"
     tools:context=".view.order.CartFragment">
-    <TextView
-        android:id="@+id/txtItem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="I miei articoli"
-        android:fontFamily="@font/inter_regular"
-        android:textSize="30dp"
-        android:textColor="@color/brown_primary"
-        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerCart"
         android:layout_width="match_parent"
-        android:layout_marginTop="32dp"
         android:layout_height="wrap_content"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtItem"
+        app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/product_item" />
 
     <TextView

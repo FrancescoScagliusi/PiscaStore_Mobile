@@ -123,9 +123,10 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    public fun setBottomNav(flag: Boolean){
-        if(flag) bottomNavigationView.visibility = View.VISIBLE
+    public fun setBottomNav(flag: Boolean) {
+        if (flag) bottomNavigationView.visibility = View.VISIBLE
         else bottomNavigationView.visibility = View.GONE
+    }
 
     override fun onBackPressed() {
 

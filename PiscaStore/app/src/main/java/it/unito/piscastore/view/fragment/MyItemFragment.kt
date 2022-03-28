@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import it.unito.piscastore.CellClickListener
+import it.unito.piscastore.MainActivity
 import it.unito.piscastore.R
 import it.unito.piscastore.controller.CatalogService
 import it.unito.piscastore.controller.adapter.RvAdapterMain
@@ -56,7 +57,11 @@ class MyItemFragment: Fragment(), CellClickListener {
             if(id!=null) getMyItems(id)
         }*/
         recyclerCart.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
         param1?.let { getMyItems(it) }
+
+        (activity as MainActivity).displayBack(true)
+        (activity as MainActivity).showTitle("I miei Articoli")
     }
 
     private fun populateList(list: List<Product>){
