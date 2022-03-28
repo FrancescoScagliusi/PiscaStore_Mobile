@@ -11,4 +11,8 @@ interface OrderService {
     @GET("bag/user/{id}")
     fun getOrderOfUser(@Path("id")id: Long): Call<List<Order>>
 
+    @GET("bag/{id}")
+    fun getOrder(@Path("id")id: Long): Call<Order>
+
+
 }

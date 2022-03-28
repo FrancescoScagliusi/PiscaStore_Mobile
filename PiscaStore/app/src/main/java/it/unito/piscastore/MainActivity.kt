@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         txtTitleBar.visibility = View.VISIBLE
     }
 
-    private fun setCurrentFragment(fragment: Fragment)=
+    public fun setCurrentFragment(fragment: Fragment)=
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment,fragment)
             commit()

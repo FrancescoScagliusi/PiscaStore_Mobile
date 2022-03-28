@@ -144,5 +144,7 @@ class OrderFragment : Fragment(),CellClickListener {
     override fun onCellClickListener(id: Long) {
         Toast.makeText(context,"CLICK: " + id.toString(), Toast.LENGTH_SHORT).show()
 
+        (activity as MainActivity).setCurrentFragment(OrderDetailFragment.newInstance(id))
+
     }
 }
