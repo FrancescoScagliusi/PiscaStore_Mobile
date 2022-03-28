@@ -8,20 +8,26 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import it.unito.piscastore.CellClickListener
 import it.unito.piscastore.R
+import it.unito.piscastore.controller.AccountService
+import it.unito.piscastore.model.Address
 import it.unito.piscastore.model.Order
 import it.unito.piscastore.model.OrderItem
+import it.unito.piscastore.model.OrderRv
+import kotlinx.coroutines.runBlocking
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class RvAdapterOrder(private val cellClickListener: CellClickListener, private val dataList: List<Order>) : RecyclerView.Adapter<RvAdapterOrder.ViewHolder>() {
+class RvAdapterOrder(private val cellClickListener: CellClickListener, private val dataList: List<OrderRv>) : RecyclerView.Adapter<RvAdapterOrder.ViewHolder>() {
 
     
     private lateinit var context: Context
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
-        val v = LayoutInflater.from(p0?.context).inflate(R.layout.order_item, p0, false)
+        val v = LayoutInflater.from(p0.context).inflate(R.layout.order_item, p0, false)
         context = p0.context
         return ViewHolder(v);
     }
@@ -51,6 +57,7 @@ class RvAdapterOrder(private val cellClickListener: CellClickListener, private v
         p0.nrItems?.text = data.items.size.toString()
         p0.price?.text = "€ " + total
         p0.date?.text = date
+        p0.address.text = getAddress(data.address)
 
     }
 
@@ -61,6 +68,12 @@ class RvAdapterOrder(private val cellClickListener: CellClickListener, private v
         }
         return total
     }
+
+    private fun getAddress(address: Address?): String{
+        if (address!=null) return "${address.street} ${address.city}, ${address.zipCode} ${address.country}"
+        else return "Impossibile caricare l'indirizzo"
+    }
+
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

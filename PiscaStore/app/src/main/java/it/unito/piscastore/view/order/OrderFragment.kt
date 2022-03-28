@@ -10,16 +10,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import it.unito.piscastore.CellClickListener
 import it.unito.piscastore.MainActivity
 import it.unito.piscastore.R
+import it.unito.piscastore.controller.AccountService
 import it.unito.piscastore.controller.CatalogService
 import it.unito.piscastore.controller.OrderService
 import it.unito.piscastore.controller.adapter.RvAdapterMain
 import it.unito.piscastore.controller.adapter.RvAdapterOrder
-import it.unito.piscastore.model.Order
-import it.unito.piscastore.model.Product
-import it.unito.piscastore.model.ProductAuthor
+import it.unito.piscastore.model.*
 import kotlinx.android.synthetic.main.fragment_catalog_list.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_order.*
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -107,7 +107,15 @@ class OrderFragment : Fragment(),CellClickListener {
     }
 
     private fun populateList(list: List<Order>){
-        adapter = RvAdapterOrder(this, list)
+
+        var listOrder : ArrayList<OrderRv> = ArrayList()
+
+        for(i in list){
+            val address: Address? =  getAddress(i.id_address)
+            listOrder.add(OrderRv(i.creation,i.id,address,i.items))
+        }
+
+        adapter = RvAdapterOrder(this, listOrder)
         showProgress(false)
 
         if(list.size>0){
@@ -121,6 +129,23 @@ class OrderFragment : Fragment(),CellClickListener {
             println("LIST: is empty")
             //txtNoProduct.visibility = View.VISIBLE
         }
+    }
+
+    private fun getAddress(id_address: Long): Address?{
+        val url = resources.getString(R.string.url_account)
+
+        val api = Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(AccountService::class.java)
+
+        val result = runBlocking {
+            api.getAddressById(id_address)
+        }
+
+        if(result.isSuccessful && result.body()!=null) return result.body()!!
+        else return null
     }
 
 
