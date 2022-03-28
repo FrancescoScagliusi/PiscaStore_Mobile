@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_cart.*
 import kotlinx.android.synthetic.main.fragment_cart.recyclerCart
 import kotlinx.android.synthetic.main.fragment_catalog_list.*
 import kotlinx.android.synthetic.main.fragment_catalog_list.txtNoProduct
+import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_my_item.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -49,6 +50,8 @@ class MyItemFragment: Fragment(), CellClickListener {
     ): View? {
         return inflater.inflate(R.layout.fragment_my_item, container, false)
     }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         /*if (arguments!=null){
@@ -56,12 +59,24 @@ class MyItemFragment: Fragment(), CellClickListener {
             println("CATE: "+ id);
             if(id!=null) getMyItems(id)
         }*/
+        showProgress(true)
         recyclerCart.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        param1?.let { getMyItems(it) }
+        param1?.let {  getMyItems(it) }
 
         (activity as MainActivity).displayBack(true)
         (activity as MainActivity).showTitle("I miei Articoli")
+    }
+
+    private fun showProgress(b: Boolean){
+        if(b) {
+            contentPaneItem.visibility = View.GONE
+            progressPaneItem.visibility = View.VISIBLE
+        }
+        else{
+            contentPaneItem.visibility = View.VISIBLE
+            progressPaneItem.visibility = View.GONE
+        }
     }
 
     private fun populateList(list: List<Product>){
@@ -71,13 +86,12 @@ class MyItemFragment: Fragment(), CellClickListener {
                 recyclerCart.adapter = adapter
                 adapter.notifyDataSetChanged()
 
-                //progressBar.setVisibility(View.GONE)
-                recyclerCart.setVisibility(View.VISIBLE)
+                showProgress(false)
             }
             println("LIST: " + list.size)
         }
         else{
-            recyclerCart.visibility = View.GONE
+            showProgress(false)
             txtNoProduct.visibility = View.VISIBLE
         }
     }
@@ -108,7 +122,7 @@ class MyItemFragment: Fragment(), CellClickListener {
 
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
                 println("ERROR: "+t.message.toString())
-
+                showProgress(false)
                 //txtFirst.text = t.message
             }
         })
