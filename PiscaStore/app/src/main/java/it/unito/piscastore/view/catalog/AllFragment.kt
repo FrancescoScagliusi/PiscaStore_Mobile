@@ -126,19 +126,9 @@ class AllFragment : Fragment(), CellClickListener {
 
 
     override fun onCellClickListener(id: Long) {
-        Toast.makeText(context,"Clicked: "+ id, Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context,"Clicked: "+ id, Toast.LENGTH_SHORT).show()
 
-        activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.flFragment,DetailFragment.newInstance(id))
-            ?.addToBackStack(null)
-            ?.setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in,R.anim.slide_out)
-            ?.commit()
-
-        /*var fr = getFragmentManager()?.beginTransaction()
-        fr?.replace(R.id.allLayout, DetailFragment.newInstance(id))
-        fr?.addToBackStack(null)
-        fr?.setCustomAnimations(R.anim.nav_default_enter_anim, R.anim.nav_default_pop_exit_anim, R.anim.nav_default_exit_anim, R.anim.nav_default_exit_anim)
-        fr?.commit()*/
+        (activity as MainActivity).setCurrentFragment(DetailFragment.newInstance(id))
 
     }
 }

@@ -81,7 +81,9 @@ class MainActivity : AppCompatActivity() {
 
         buttonBack.setOnClickListener {
             this.setBottomNav(true)
-           supportFragmentManager.popBackStack()
+            supportFragmentManager.popBackStack()
+
+            println("FRAGMENT: " + supportFragmentManager.fragments)
         }
 
         if(b) buttonBack.visibility = View.VISIBLE
@@ -100,7 +102,9 @@ class MainActivity : AppCompatActivity() {
     public fun setCurrentFragment(fragment: Fragment)=
 
         supportFragmentManager.beginTransaction().apply {
+            setCustomAnimations(R.anim.slide_in, R.anim.fade_out, R.anim.fade_in,R.anim.slide_out)
             replace(R.id.flFragment,fragment)
+            addToBackStack(null)
             commit()
         }
 
