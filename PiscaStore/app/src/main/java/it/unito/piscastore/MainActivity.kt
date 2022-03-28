@@ -18,8 +18,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    val BASEURL: String = "http://192.168.1.20:8080/catalog/api/v1/"
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         title = "PiscaStore"
 
-
+        bottomNavigationView.visibility = View.VISIBLE
         buttonBack.visibility = View.GONE
 
 
@@ -83,6 +81,7 @@ class MainActivity : AppCompatActivity() {
     public fun displayBack(b: Boolean){
 
         buttonBack.setOnClickListener {
+            this.setBottomNav(true)
            supportFragmentManager.popBackStack()
         }
 
@@ -90,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         else buttonBack.visibility = View.GONE
     }
 
-    private fun setCurrentFragment(fragment: Fragment)=
+     fun setCurrentFragment(fragment: Fragment)=
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment,fragment)
             commit()
@@ -108,6 +107,11 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences: SharedPreferences = this.getSharedPreferences("tokenStorage", Context.MODE_PRIVATE)
         val sharedIdValue = sharedPreferences.getString("token","")
         return sharedIdValue.toString()
+    }
+
+    public fun setBottomNav(flag: Boolean){
+        if(flag) bottomNavigationView.visibility = View.VISIBLE
+        else bottomNavigationView.visibility = View.GONE
     }
 
 }

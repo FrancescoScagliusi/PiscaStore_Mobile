@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
+import it.unito.piscastore.MainActivity
 import it.unito.piscastore.R
 import it.unito.piscastore.controller.AccountService
 import it.unito.piscastore.model.CurrentInfo
@@ -40,7 +41,7 @@ class ProfileFragment: Fragment() {
         println(token)
         val client = OkHttpClient.Builder().addInterceptor { chain ->
             val newRequest: Request = chain.request().newBuilder()
-                    .addHeader("Auth", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJuaWNvbGFwaWNjb2xvIiwiaWF0IjoxNjQ4MTA5NTg2LCJleHAiOjE2NDgxOTU5ODZ9.HbLa6LORS5uOkoRT8WQHrt_6ZNSgvleAmDV5ZM6OupA1xmGDqmHtDI2UU1kZNG8cvGB9WJywx3g_ZS-_pxs7KA")
+                    .addHeader("Auth", "Bearer $token")
                     .build()
             chain.proceed(newRequest)
         }.build()
@@ -73,6 +74,10 @@ class ProfileFragment: Fragment() {
             this.deleteToken()
             val intent = Intent(context, LandingActivity::class.java)
             startActivity(intent)
+        }
+
+        txtArticoli.setOnClickListener {
+            (activity as MainActivity).setCurrentFragment(MyItemFragment.newInstance(2))
         }
     }
 
