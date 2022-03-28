@@ -10,10 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import it.unito.piscastore.CellClickListener
 import it.unito.piscastore.R
+import it.unito.piscastore.model.OrderItem
 import it.unito.piscastore.model.Product
 
 
-class RvAdapterMain(private val cellClickListener: CellClickListener, private val dataList: List<Product>) : RecyclerView.Adapter<RvAdapterMain.ViewHolder>() {
+class RvAdapterDetailOrder(private val cellClickListener: CellClickListener, private val dataList: ArrayList<Product>) : RecyclerView.Adapter<RvAdapterDetailOrder.ViewHolder>() {
 
     
     private lateinit var context: Context
@@ -37,10 +38,11 @@ class RvAdapterMain(private val cellClickListener: CellClickListener, private va
         }
 
         p0.name?.text = data.name.capitalize()
-        p0.dimensions?.text = data.dimensions.capitalize()
         p0.price?.text = "€ " + data.price.toString()
+        p0.dimensions?.text = data.dimensions
 
         Picasso.get().load(context.resources.getString(R.string.url_image_local) +  data.image).into(p0.image)
+
     }
 
 

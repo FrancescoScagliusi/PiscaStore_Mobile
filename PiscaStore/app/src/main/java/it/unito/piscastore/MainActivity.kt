@@ -13,12 +13,12 @@ import it.unito.piscastore.view.activity.LandingActivity
 import it.unito.piscastore.view.catalog.HomeFragment
 import it.unito.piscastore.view.fragment.ProfileFragment
 import it.unito.piscastore.view.order.CartFragment
+import it.unito.piscastore.view.order.OrderFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
 
-    val BASEURL: String = "http://192.168.1.20:8080/catalog/api/v1/"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +43,9 @@ class MainActivity : AppCompatActivity() {
 
         val firstFragment=HomeFragment()
         val secondFragment=CartFragment()
-        val thirdFragment=ProfileFragment()
+        //val thirdFragment=OrderFragment()
+
+      val thirdFragment=ProfileFragment()
         val b = Bundle()
         b.putString("token", this.getUser())
         thirdFragment.arguments = b;
@@ -55,9 +57,9 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId){
                 R.id.home->setCurrentFragment(firstFragment)
                 R.id.cart->setCurrentFragment(secondFragment)
+
                 R.id.profile->setCurrentFragment(thirdFragment)
                 //R.id.settings->//setCurrentFragment(thirdFragment)
-
             }
             true
         }
@@ -87,10 +89,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         if(b) buttonBack.visibility = View.VISIBLE
-        else buttonBack.visibility = View.GONE
+        else {
+            buttonBack.visibility = View.GONE
+            txtTitleBar.visibility = View.GONE
+        }
     }
 
-    private fun setCurrentFragment(fragment: Fragment)=
+    public fun showTitle(title: String){
+        txtTitleBar.text = title
+        txtTitleBar.visibility = View.VISIBLE
+    }
+
+    public fun setCurrentFragment(fragment: Fragment)=
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment,fragment)
             commit()
@@ -98,8 +108,12 @@ class MainActivity : AppCompatActivity() {
 
     fun saveUser(accessToken: String){
         val sharedPreferences: SharedPreferences = this.getSharedPreferences("tokenStorage", Context.MODE_PRIVATE)
+
         val editor: SharedPreferences.Editor =  sharedPreferences.edit()
+
         editor.putString("token", accessToken)
+        editor.putString("items",null)
+
         editor.apply()
         editor.commit()
     }
@@ -108,6 +122,9 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences: SharedPreferences = this.getSharedPreferences("tokenStorage", Context.MODE_PRIVATE)
         val sharedIdValue = sharedPreferences.getString("token","")
         return sharedIdValue.toString()
+    }
+
+    override fun onBackPressed() {
     }
 
 }

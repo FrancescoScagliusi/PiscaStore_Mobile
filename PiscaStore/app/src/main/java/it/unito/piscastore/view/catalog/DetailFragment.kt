@@ -20,6 +20,7 @@ import it.unito.piscastore.model.Product
 import it.unito.piscastore.model.ProductAuthor
 import kotlinx.android.synthetic.main.activity_detail_product.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_catalog_list.*
 import kotlinx.android.synthetic.main.fragment_detail.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,18 +33,12 @@ import java.lang.reflect.Type
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+   
     private var id: Long? = null
-
     private var product: Product? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +58,8 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showProgress(true)
+
         id?.let { getProductDetails(it) }
 
         (activity as MainActivity).displayBack(true)
@@ -73,24 +70,40 @@ class DetailFragment : Fragment() {
     }
 
 
+    private fun showProgress(b: Boolean){
+        if(b) {
+            paneDetail.visibility = View.GONE
+            progressBarDetail.visibility = View.VISIBLE
+        }
+        else{
+            paneDetail.visibility = View.VISIBLE
+            progressBarDetail.visibility = View.GONE
+        }
+    }
 
     private fun addToCart(){
-        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("cart", MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences("tokenStorage", MODE_PRIVATE)
 
         val gson = Gson()
         val json = sharedPreferences.getString("items", null)
 
-        val type: Type = object : TypeToken<ArrayList<Product>>() {}.type
+        var items = ArrayList<Product>()
+        if(json!=null) {
+            val type: Type = object : TypeToken<ArrayList<Product>>() {}.type
 
-        var items: ArrayList<Product> = gson.fromJson<Any>(json, type) as ArrayList<Product>
+            items = gson.fromJson<Any>(json, type) as ArrayList<Product>
 
-        if (items == null) {
-            items = ArrayList()
+            if (this.product != null) {
+                if (!items.contains(this.product!!)) items.add(this.product!!)
+                else Toast.makeText(
+                    context,
+                    "L'articolo è già presente nel carrello!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
-
-        if(this.product!=null){
-            if(!items.contains(this.product!!)) items.add(this.product!!)
-            else Toast.makeText(context,"L'articolo è già presente nel carrello!",Toast.LENGTH_SHORT).show()
+        else{
+            items.add(this.product!!)
         }
 
         val editor = sharedPreferences.edit()
@@ -102,7 +115,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun getProductDetails(id: Long) {
-        val url = resources.getString(R.string.url_catalog)
+        val url = resources.getString(R.string.url_catalog_local)
 
 
         val retrofit = Retrofit.Builder()
@@ -138,7 +151,7 @@ class DetailFragment : Fragment() {
 
         this.product = p.product
 
-        val url_image = resources.getString(R.string.url_image)
+        val url_image = resources.getString(R.string.url_image_local)
         detailTxtName.text = p.product.name
 
         val imageList = ArrayList<SlideModel>() // Create image list
@@ -173,6 +186,8 @@ class DetailFragment : Fragment() {
         detailTxtPrice.text = "€" + p.product.price
         detailTxtDescription.text = p.product.description
         detailTxtDimensions.text = p.product.dimensions
+
+        showProgress(false)
     }
 
     companion object {

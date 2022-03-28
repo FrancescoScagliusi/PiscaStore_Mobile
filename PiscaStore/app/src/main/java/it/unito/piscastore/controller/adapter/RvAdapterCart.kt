@@ -51,7 +51,7 @@ class RvAdapterCart(private val onProductListener: OnProductClickListener, priva
             onProductListener.onDelete(product)
         }
 
-        Picasso.get().load("http://192.168.1.20:8080/catalog/api/v1/image/" +  data.image).into(p0.image)
+        Picasso.get().load( context.resources.getString(R.string.url_image_local) +  data.image).into(p0.image)
     }
 
 
