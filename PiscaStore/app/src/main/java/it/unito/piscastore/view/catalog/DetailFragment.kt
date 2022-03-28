@@ -46,6 +46,7 @@ class DetailFragment : Fragment() {
         arguments?.let {
             id = it.getLong(ARG_PARAM1)
         }
+        (activity as MainActivity).setBottomNav(false)
     }
 
     override fun onCreateView(

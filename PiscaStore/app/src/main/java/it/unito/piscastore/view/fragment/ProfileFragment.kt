@@ -77,8 +77,13 @@ class ProfileFragment: Fragment() {
             startActivity(intent)
         }
 
+
+        txtArticoli.setOnClickListener {
+            (activity as MainActivity).setCurrentFragment(MyItemFragment.newInstance(2))
+        }
         txtOrdini.setOnClickListener {
             (activity as MainActivity).setCurrentFragment(OrderFragment())
+
         }
     }
 

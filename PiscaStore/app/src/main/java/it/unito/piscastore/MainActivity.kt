@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         title = "PiscaStore"
 
-
+        bottomNavigationView.visibility = View.VISIBLE
         buttonBack.visibility = View.GONE
 
 
@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity() {
     public fun displayBack(b: Boolean){
 
         buttonBack.setOnClickListener {
+            this.setBottomNav(true)
            supportFragmentManager.popBackStack()
         }
 
@@ -95,7 +96,9 @@ class MainActivity : AppCompatActivity() {
         txtTitleBar.visibility = View.VISIBLE
     }
 
+
     public fun setCurrentFragment(fragment: Fragment)=
+
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment,fragment)
             commit()
@@ -119,7 +122,13 @@ class MainActivity : AppCompatActivity() {
         return sharedIdValue.toString()
     }
 
+
+    public fun setBottomNav(flag: Boolean){
+        if(flag) bottomNavigationView.visibility = View.VISIBLE
+        else bottomNavigationView.visibility = View.GONE
+
     override fun onBackPressed() {
+
     }
 
 }
