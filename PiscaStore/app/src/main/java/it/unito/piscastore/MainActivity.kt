@@ -45,11 +45,8 @@ class MainActivity : AppCompatActivity() {
         val secondFragment=CartFragment()
         //val thirdFragment=OrderFragment()
 
-      val thirdFragment=ProfileFragment()
-        val b = Bundle()
-        b.putString("token", this.getUser())
-        thirdFragment.arguments = b;
-        //val thirdFragment=ThirdFragment()
+        val thirdFragment=ProfileFragment()
+
 
         setCurrentFragment(firstFragment)
 
@@ -57,9 +54,7 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId){
                 R.id.home->setCurrentFragment(firstFragment)
                 R.id.cart->setCurrentFragment(secondFragment)
-
                 R.id.profile->setCurrentFragment(thirdFragment)
-                //R.id.settings->//setCurrentFragment(thirdFragment)
             }
             true
         }

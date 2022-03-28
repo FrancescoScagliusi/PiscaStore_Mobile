@@ -41,7 +41,7 @@ class RvAdapterDetailOrder(private val cellClickListener: CellClickListener, pri
         p0.price?.text = "€ " + data.price.toString()
         p0.dimensions?.text = data.dimensions
 
-        Picasso.get().load(context.resources.getString(R.string.url_image_local) +  data.image).into(p0.image)
+        Picasso.get().load(context.resources.getString(R.string.url_image) +  data.image).into(p0.image)
 
     }
 

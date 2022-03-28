@@ -115,7 +115,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun getProductDetails(id: Long) {
-        val url = resources.getString(R.string.url_catalog_local)
+        val url = resources.getString(R.string.url_catalog)
 
 
         val retrofit = Retrofit.Builder()
@@ -151,7 +151,7 @@ class DetailFragment : Fragment() {
 
         this.product = p.product
 
-        val url_image = resources.getString(R.string.url_image_local)
+        val url_image = resources.getString(R.string.url_image)
         detailTxtName.text = p.product.name
 
         val imageList = ArrayList<SlideModel>() // Create image list

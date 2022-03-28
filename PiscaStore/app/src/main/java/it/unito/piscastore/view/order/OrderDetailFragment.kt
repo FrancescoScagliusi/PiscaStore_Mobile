@@ -76,7 +76,7 @@ class OrderDetailFragment : Fragment(), CellClickListener {
     }
 
     private fun getProduct(id_product: Long): Product? {
-        val url = resources.getString(R.string.url_catalog_local)
+        val url = resources.getString(R.string.url_catalog)
 
 
         val client = OkHttpClient.Builder().build()
@@ -98,7 +98,7 @@ class OrderDetailFragment : Fragment(), CellClickListener {
 
 
     private fun getOrderDetails(id: Long) {
-        val url = resources.getString(R.string.url_order_local)
+        val url = resources.getString(R.string.url_order)
 
         val retrofit = Retrofit.Builder()
             .baseUrl(url)

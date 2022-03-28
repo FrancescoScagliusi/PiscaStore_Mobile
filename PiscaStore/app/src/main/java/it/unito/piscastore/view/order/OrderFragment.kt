@@ -81,7 +81,7 @@ class OrderFragment : Fragment(),CellClickListener {
     }
 
     private fun getOrder(id_user: Long) {
-        val url = resources.getString(R.string.url_order_local)
+        val url = resources.getString(R.string.url_order)
 
 
         val retrofit = Retrofit.Builder()

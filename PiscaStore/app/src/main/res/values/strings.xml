@@ -16,7 +16,7 @@
     <string name="url_user_local">http://192.168.1.20:8080/user-service/auth/</string>-->
 
 
-    <!--<string name="url_order_local">http://172.20.10.5:8080/order/api/v1/</string>ù
+    <!--<string name="url_order_local">http://172.20.10.5:8080/order/api/v1/</string>
     <string name="url_catalog_local">http://172.20.10.5:8080/catalog/api/v1/</string>
     <string name="url_image_local">http://172.20.10.5:8080/catalog/api/v1/image/"</string>
     <string name="url_user_local">http://172.20.10.5:8080/user-service/auth/</string>-->
@@ -26,6 +26,7 @@
     <string name="url_image">http://192.168.1.20:8080/catalog/api/v1/image/"</string>
     <string name="url_user">http://192.168.1.20:8080/user-service/auth/</string>
     <string name="url_account">http://192.168.1.20:8081/account/</string>
+    <string name="url_order">http://192.168.1.20:8080/order/api/v1/</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

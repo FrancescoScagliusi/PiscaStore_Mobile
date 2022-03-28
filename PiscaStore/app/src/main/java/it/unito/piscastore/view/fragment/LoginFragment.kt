@@ -51,7 +51,7 @@ class LoginFragment : Fragment() {
 
             showProgress(true)
             val retrofit = Retrofit.Builder()
-                    .baseUrl(resources.getString(R.string.url_user_local))
+                    .baseUrl(resources.getString(R.string.url_user))
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
             val service = retrofit.create(UserService::class.java)

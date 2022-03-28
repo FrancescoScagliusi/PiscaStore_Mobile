@@ -66,7 +66,7 @@ class AllFragment : Fragment(), CellClickListener {
 
     private fun getData(id: Long){
         val retrofit = Retrofit.Builder()
-            .baseUrl(resources.getString(R.string.url_catalog_local))
+            .baseUrl(resources.getString(R.string.url_catalog))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
