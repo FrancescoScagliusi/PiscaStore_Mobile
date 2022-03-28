@@ -16,8 +16,6 @@ import it.unito.piscastore.controller.OrderService
 import it.unito.piscastore.controller.adapter.RvAdapterMain
 import it.unito.piscastore.controller.adapter.RvAdapterOrder
 import it.unito.piscastore.model.*
-import kotlinx.android.synthetic.main.fragment_catalog_list.*
-import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_order.*
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
@@ -127,7 +125,7 @@ class OrderFragment : Fragment(),CellClickListener {
         }
         else{
             println("LIST: is empty")
-            //txtNoProduct.visibility = View.VISIBLE
+            txtNoProduct.visibility = View.VISIBLE
         }
     }
 
