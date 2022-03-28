@@ -10,13 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import it.unito.piscastore.CellClickListener
 import it.unito.piscastore.MainActivity
 import it.unito.piscastore.R
+import it.unito.piscastore.controller.AccountService
 import it.unito.piscastore.controller.CatalogService
 import it.unito.piscastore.controller.OrderService
 import it.unito.piscastore.controller.adapter.RvAdapterDetailOrder
-import it.unito.piscastore.model.Order
-import it.unito.piscastore.model.OrderItem
-import it.unito.piscastore.model.Product
-import it.unito.piscastore.model.ProductAuthor
+import it.unito.piscastore.model.*
 import kotlinx.android.synthetic.main.fragment_order.*
 import kotlinx.android.synthetic.main.fragment_order_detail.*
 import kotlinx.coroutines.*
@@ -78,9 +76,6 @@ class OrderDetailFragment : Fragment(), CellClickListener {
     private fun getProduct(id_product: Long): Product? {
         val url = resources.getString(R.string.url_catalog)
 
-
-        val client = OkHttpClient.Builder().build()
-
         val api = Retrofit.Builder()
             .baseUrl(url)
             .addConverterFactory(GsonConverterFactory.create())
@@ -93,9 +88,24 @@ class OrderDetailFragment : Fragment(), CellClickListener {
 
         if(result.isSuccessful && result.body()!=null) return result.body()?.product!!
         else return null
-        //println("Product: " + result)
     }
 
+    private fun getAddress(id_address: Long): Address?{
+        val url = resources.getString(R.string.url_account)
+
+        val api = Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(AccountService::class.java)
+
+        val result = runBlocking {
+            api.getAddressById(id_address)
+        }
+
+        if(result.isSuccessful && result.body()!=null) return result.body()!!
+        else return null
+    }
 
     private fun getOrderDetails(id: Long) {
         val url = resources.getString(R.string.url_order)
@@ -129,6 +139,8 @@ class OrderDetailFragment : Fragment(), CellClickListener {
         })
     }
 
+
+
     private fun showProgress(b: Boolean) {
         if (b) {
             contentPaneDetailOrder.visibility = View.GONE
@@ -143,8 +155,17 @@ class OrderDetailFragment : Fragment(), CellClickListener {
     private fun setView(order: Order) {
         populateList(order.items.toList(), this)
 
+        var address_obj = getAddress(order.id_address)
+
+
         txtOrderIdDetailOrder.text = order.id.toString()
-        txtAddressDetailOrder.text = order.id_address.toString()
+
+        if(address_obj!=null) {
+            val address: String = "${address_obj.street}\n${address_obj.city}, ${address_obj.zipCode}\n${address_obj.country}"
+            txtAddressDetailOrder.text = address
+        }
+        else txtAddressDetailOrder.text = "Impossibile caricare l'indirizzo"
+
 
         val total: Float = getTotal(order.items)
         txtTotalDetailOrder.text = "€ " + total
@@ -162,6 +183,8 @@ class OrderDetailFragment : Fragment(), CellClickListener {
         }
         println("LIST ITEMS: " + items.size)
 
+
+
         adapter = RvAdapterDetailOrder(cellClickListener, items)
 
         if (list.size > 0) {
@@ -175,40 +198,6 @@ class OrderDetailFragment : Fragment(), CellClickListener {
         }
     }
 
-    /*private fun getProductDetails(id: Long){
-        val url = resources.getString(R.string.url_catalog_local)
-
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl(url)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val service = retrofit.create(CatalogService::class.java)
-
-        val call = service.getProductById(id)
-
-        call.enqueue(object : Callback<ProductAuthor> {
-            override fun onResponse(
-                call: Call<ProductAuthor>,
-                response: Response<ProductAuthor>
-            ) {
-                if (response.code() == 200) {
-                    val productResponse = response.body()!!
-                    println("ProductAuthor: " + productResponse)
-                    if (productResponse.product.id > 0) setView(productResponse)
-                }
-            }
-
-            override fun onFailure(call: Call<ProductAuthor>, t: Throwable) {
-                println("ERROR: " + t.message.toString())
-                //Toast.makeText(this,"ERROR: " + t.message.toString(), Toast.LENGTH_SHORT).show()
-                //txtFirst.text = t.message
-            }
-        })
-
-        //return product?.product;
-    }*/
 
 
     private fun getTotal(items: Array<OrderItem>): Float {

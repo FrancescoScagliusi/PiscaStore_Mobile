@@ -1,17 +1,20 @@
 package it.unito.piscastore.controller
 
-import android.telecom.Call
+import it.unito.piscastore.model.Address
 import it.unito.piscastore.model.CurrentInfo
 import it.unito.piscastore.model.CurrentUser
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.HeaderMap
-import retrofit2.http.Headers
+import retrofit2.Call
+import retrofit2.Response
+import retrofit2.http.*
 
 interface AccountService {
 
     @GET("current/info")
     fun getCurrentUser(
             @Header("Authorization") token: String
-    ): retrofit2.Call<CurrentInfo?>?
+    ): Call<CurrentInfo?>?
+
+    @GET("address/{id}")
+    suspend fun getAddressById(@Path("id") id: Long): Response<Address>
+
 }
