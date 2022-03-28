@@ -10,9 +10,12 @@ import retrofit2.http.*
 interface AccountService {
 
     @GET("current/info")
-    fun getCurrentUser(
+    suspend fun getCurrentUser(
             @Header("Authorization") token: String
-    ): Call<CurrentInfo?>?
+    ): Response<CurrentInfo?>
+
+    @GET("current")
+    suspend fun getIdOfCurrentUser(@Header("Authorization") token: String): Response<Long>
 
     @GET("address/{id}")
     suspend fun getAddressById(@Path("id") id: Long): Response<Address>

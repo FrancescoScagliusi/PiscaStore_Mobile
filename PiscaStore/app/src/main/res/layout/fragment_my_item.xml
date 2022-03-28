@@ -27,7 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
-            android:text="Nessun prodotto per la categoria corrente!"
+            android:gravity="center"
+            android:text="Nessun prodotto, comincia a vendere!"
             android:textColor="@color/black"
             android:textSize="16dp"
             android:visibility="gone"
@@ -57,9 +58,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/inter_regular"
-            android:text="Caricamento informazioni utente in corso"
+            android:text="Caricamento informazioni articoli in corso"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="22sp" />
     </LinearLayout>
 
 </FrameLayout>

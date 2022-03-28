@@ -28,13 +28,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 
 class OrderFragment : Fragment(),CellClickListener {
 
-    private var param1: String? = null
-    private var param2: String? = null
+    private var id_user: Long? = null
 
 
     private lateinit var adapter: RvAdapterOrder
@@ -42,8 +40,7 @@ class OrderFragment : Fragment(),CellClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            id_user = it.getLong(ARG_PARAM1)
         }
     }
 
@@ -61,12 +58,10 @@ class OrderFragment : Fragment(),CellClickListener {
         recyclerViewOrder.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         showProgress(true)
 
-        (activity as MainActivity).displayBack(false)
+        (activity as MainActivity).displayBack(true)
         (activity as MainActivity).showTitle("I miei Ordini")
 
-
-
-        getOrder(1)
+        getOrder(this.id_user!!)
     }
 
     private fun showProgress(b: Boolean){
@@ -132,11 +127,10 @@ class OrderFragment : Fragment(),CellClickListener {
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(id_user: Long) =
             OrderFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putLong(ARG_PARAM1, id_user)
                 }
             }
     }

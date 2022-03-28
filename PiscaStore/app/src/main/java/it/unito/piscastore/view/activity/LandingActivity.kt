@@ -29,4 +29,8 @@ class LandingActivity : AppCompatActivity() {
         intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
+
+    override fun onBackPressed() {
+
+    }
 }
