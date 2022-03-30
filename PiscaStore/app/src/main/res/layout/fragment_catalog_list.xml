@@ -25,6 +25,7 @@
             android:id="@+id/recyclerView1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="50dp"
             android:background="@color/grey_back"
             android:visibility="visible"
             tools:listitem="@layout/product_item" />
@@ -34,7 +35,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-
             android:text="Nessun prodotto per la categoria corrente!"
             android:textColor="@color/black"
             android:textSize="16dp"
